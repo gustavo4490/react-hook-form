@@ -1,8 +1,13 @@
 import React from 'react'
+import RegistroFormulario from './componentes/RegistroFormulario'
 
 function App() {
   return (
-    <div>App.js</div>
+    <div>
+    <header>
+    <RegistroFormulario/>
+    </header>
+    </div>
   )
 }
 
