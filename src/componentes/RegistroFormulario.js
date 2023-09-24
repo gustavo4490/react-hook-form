@@ -1,4 +1,5 @@
 import React from 'react';
+import { useForm } from 'react-hook-form';
 
 const RegistroFormulario = () => {
     const estiloFormulario = {
@@ -37,30 +38,48 @@ const RegistroFormulario = () => {
     const estiloLabel = {
         display: 'block',
         color: '#fff',
-
         width: '80%',
         margin: 'auto',
         textAlign: 'start',
+    };
+    const estiloSpan = {
+        display: 'block',
+        color: 'red',
+        width: '80%',
+        margin: 'auto',
+        textAlign: 'start',
+        fontSize: '12px'
     };
 
     const estiloLabelDark = {
         color: '#fff',
     };
-
+    const { register, handleSubmit,
+        formState: {
+            errors
+        } } = useForm();
+    const onSubmit = handleSubmit((data) => {
+        console.log(data);
+    })
 
     return (
         <div>
-            <form style={estiloFormulario}>
+            <form style={estiloFormulario} onSubmit={onSubmit}>
                 <h1 style={{ color: '#fff' }}>Registro</h1>
                 <label style={estiloLabel}>Nombre:</label>
-                <input type="text" placeholder="Nombre" style={estiloInput} required />
+                <input type="text" placeholder="Nombre" style={estiloInput}
+                    {...register("nombre", {
+                        required: true
+                    })} />
+                    <span style={estiloSpan}>Hola</span>
                 <br />
                 <label style={estiloLabel}>Correo:</label>
                 <input
                     type="email"
                     placeholder="Correo electrónico"
                     style={estiloInput}
-                    required
+                    {...register("correo")}
+
                 />
                 <br />
                 <label style={estiloLabel}>Contraseña:</label>
@@ -68,7 +87,7 @@ const RegistroFormulario = () => {
                     type="password"
                     placeholder="Contraseña"
                     style={estiloInput}
-                    required
+                    {...register("contraseña")}
                 />
                 <br />
                 <label style={estiloLabel}>Confirmar contraseña:</label>
@@ -76,17 +95,19 @@ const RegistroFormulario = () => {
                     type="password"
                     placeholder="Confirmar contraseña"
                     style={estiloInput}
-                    required
+                    {...register("confirmarContraseña")}
                 />
                 <br />
                 <label style={estiloLabel}>Fecha de nacimiento:</label>
                 <input
                     type="date"
                     style={estiloInput}
-                    required
+                    {...register("fechaNacimiento")}
                 />
                 <label style={estiloLabel}>pais:</label>
-                <select style={estiloInput}>
+                <select style={estiloInput}
+                    {...register("pais")}
+                >
                     <option value="mx">Mexico</option>
                     <option value="gt">Guatemala</option>
                     <option value="co">Colombia</option>
@@ -97,9 +118,9 @@ const RegistroFormulario = () => {
                 <input
                     type="checkbox"
                     style={estiloInput}
-                    required
+                    {...register("terminos")}
                 />
-                <br/>
+                <br />
                 <input
                     type="submit"
                     value="Registrar"
