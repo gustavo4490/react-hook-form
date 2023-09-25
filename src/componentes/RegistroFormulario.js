@@ -69,9 +69,20 @@ const RegistroFormulario = () => {
                 <label style={estiloLabel}>Nombre:</label>
                 <input type="text" placeholder="Nombre" style={estiloInput}
                     {...register("nombre", {
-                        required: true
+                        required: {
+                            value: true,
+                            message: 'Nombre requerido'
+                        },
+                        minLength: {
+                            value: 5,
+                            message: 'El nombre debe tener al menos 5 caracteres'
+                        },
+                        maxLength: {
+                            value: 20,
+                            message: 'El nombre debe tener maximo 25 caracteres'
+                        }
                     })} />
-                    <span style={estiloSpan}>Hola</span>
+                {errors.nombre && <span style={estiloSpan}>{errors.nombre.message}</span>}
                 <br />
                 <label style={estiloLabel}>Correo:</label>
                 <input
