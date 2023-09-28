@@ -54,10 +54,13 @@ const RegistroFormulario = () => {
     const estiloLabelDark = {
         color: '#fff',
     };
-    const { register, handleSubmit,
-        formState: {
-            errors
-        } } = useForm();
+    const
+        { register,
+            handleSubmit,
+            formState: { errors },
+            watch
+        } = useForm();
+
     const onSubmit = handleSubmit((data) => {
         console.log(data);
     })
@@ -113,43 +116,60 @@ const RegistroFormulario = () => {
                             value: true,
                             message: 'Contraseña es requerido'
                         },
-                        
+                        minLength:{
+                            value:8,
+                            message:"Se requieren 8 caracteres como minimo"
+                        }
                     })}
                 />
-                 {errors.password && <span style={estiloSpan}>{errors.password.message}</span>}
+                {errors.password && <span style={estiloSpan}>{errors.password.message}</span>}
                 <br />
                 <label style={estiloLabel}>Confirmar contraseña:</label>
                 <input
                     type="password"
                     placeholder="Confirmar contraseña"
                     style={estiloInput}
-                    {...register("confirmarContraseña")}
+                    {...register("confirmarContraseña", {
+                        required: {
+                            value: true,
+                            message: "Contraseña requerida"
+                        },
+                        validate: (value) => {
+                            if (value === watch("password")) {
+                                return true
+                            }
+                            else {
+                                return "La contraseña no son iguales"
+                            }
+                        }
+                    })}
                 />
+                {errors.confirmarContraseña && <span style={estiloSpan}>{errors.confirmarContraseña.message}</span>}
                 <br />
                 <label style={estiloLabel}>Fecha de nacimiento:</label>
                 <input
                     type="date"
                     style={estiloInput}
-                    {...register("fechaNacimiento",{
-                        required:{
-                            value:true,
-                            message:"Fecha de nacimiento es requerido"
+                    {...register("fechaNacimiento", {
+                        required: {
+                            value: true,
+                            message: "Fecha de nacimiento es requerido"
                         },
                         validate: (value) => {
-                          const fechaNacimiento = new Date (value);
-                          const fechaActual = new Date();
-                          const edad = fechaActual.getFullYear() - fechaNacimiento.getFullYear();
+                            const fechaNacimiento = new Date(value);
+                            const fechaActual = new Date();
+                            const edad = fechaActual.getFullYear() - fechaNacimiento.getFullYear();
 
-                          if (edad >= 18){
-                            return true 
-                          }
-                          else {
-                            return "Debes ser mayor de edad"
-                          }
+                            if (edad >= 18) {
+                                return true
+                            }
+                            else {
+                                return "Debes ser mayor de edad"
+                            }
                         }
                     })}
                 />
-                  {errors.fechaNacimiento && <span style={estiloSpan}>{errors.fechaNacimiento.message}</span>}
+                {errors.fechaNacimiento && <span style={estiloSpan}>{errors.fechaNacimiento.message}</span>}
                 <label style={estiloLabel}>pais:</label>
                 <select style={estiloInput}
                     {...register("pais")}
