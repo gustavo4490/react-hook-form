@@ -58,11 +58,22 @@ const RegistroFormulario = () => {
         { register,
             handleSubmit,
             formState: { errors },
-            watch
-        } = useForm();
+            watch,
+            reset
+        } = useForm({
+            defaultValues:{
+                nombre: "nombre por default"
+            }
+        });
 
     const onSubmit = handleSubmit((data) => {
         console.log(data);
+
+        //Aqui va el axios
+        alert('Enviando datos....');
+
+        // limpia todo el formulario
+        reset();
     })
 
     return (
@@ -198,6 +209,7 @@ const RegistroFormulario = () => {
                         (e.target.style.backgroundColor = estiloBoton.backgroundColor)
                     }
                 />
+                <pre>{JSON.stringify(watch(),null,2)}</pre>
             </form>
         </div>
     );
