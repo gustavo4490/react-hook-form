@@ -89,17 +89,34 @@ const RegistroFormulario = () => {
                     type="email"
                     placeholder="Correo electrónico"
                     style={estiloInput}
-                    {...register("correo")}
+                    {...register("correo", {
+                        required: {
+                            value: true,
+                            message: 'correo es requerido'
+                        },
+                        pattern: {
+                            value: /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/,
+                            message: "Correo no es valido"
+                        }
+                    })}
 
                 />
+                {errors.correo && <span style={estiloSpan}>{errors.correo.message}</span>}
                 <br />
                 <label style={estiloLabel}>Contraseña:</label>
                 <input
                     type="password"
                     placeholder="Contraseña"
                     style={estiloInput}
-                    {...register("contraseña")}
+                    {...register("password", {
+                        required: {
+                            value: true,
+                            message: 'Contraseña es requerido'
+                        },
+                        
+                    })}
                 />
+                 {errors.password && <span style={estiloSpan}>{errors.password.message}</span>}
                 <br />
                 <label style={estiloLabel}>Confirmar contraseña:</label>
                 <input
@@ -113,8 +130,26 @@ const RegistroFormulario = () => {
                 <input
                     type="date"
                     style={estiloInput}
-                    {...register("fechaNacimiento")}
+                    {...register("fechaNacimiento",{
+                        required:{
+                            value:true,
+                            message:"Fecha de nacimiento es requerido"
+                        },
+                        validate: (value) => {
+                          const fechaNacimiento = new Date (value);
+                          const fechaActual = new Date();
+                          const edad = fechaActual.getFullYear() - fechaNacimiento.getFullYear();
+
+                          if (edad >= 18){
+                            return true 
+                          }
+                          else {
+                            return "Debes ser mayor de edad"
+                          }
+                        }
+                    })}
                 />
+                  {errors.fechaNacimiento && <span style={estiloSpan}>{errors.fechaNacimiento.message}</span>}
                 <label style={estiloLabel}>pais:</label>
                 <select style={estiloInput}
                     {...register("pais")}
